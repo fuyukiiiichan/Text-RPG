@@ -148,24 +148,22 @@ Enemydict = {
         }
     }
 }
-HP = 100
 XP = 0
+maxhp = 100
+HP = maxhp
 coins = 0
 Arenas = ["Grass Fields","Village","Cave","Gladiator Arena","Kings Castle","Olympus","Peak Olympus"]
-def shop(HP, Strenght, Agillity, Intelligence, Critical, coins):
+def shop(HP, Strenght, Agillity, Intelligence, Critical, coins, maxhp):
     print("Welcome to the shop!")
-    print("1) Basic Strenght Potion: +5 Strenght | 20 Coins ")
-    print("2) Basic Health Potion: +30 Health | 30 Coins ")
-    print("3) Basic Agillity Potion: +10 Agillity | 25 Coins ")
-    print("4) Basic Intelligence Potion: +5 Intelligence | 20 Coins ")
-    print("5) Rare Strenght Potion: +15 Strenght | 50 Coins ")
-    print("6) Rare Health Potion: +50 Health | 80 Coins ")
-    print("7) Rare Agillity Potion: +15 Agillity | 65 Coins ")
-    print("8) Rare Intelligence Potion: +15 Intelligence | 50 Coins ")
-    print("9) Elite Strenght Potion: +30 Strenght | 100 Coins ")
-    print("10) Elite Health Potion: +100 Health | 350 Coins ")
-    print("11) Elite Agillity Potion: +45 Agillity | 165 Coins ")
-    print("12) Elite Intelligence Potion: +30 Intelligence | 100  Coins ")
+    print("1) Basic Strenght Potion: +5 Strenght | 150 Coins ")
+    print("2) Basic Health Potion: +30 Health | 150 Coins ")
+    print("3) Basic Intelligence Potion: +5 Intelligence | 150 Coins ")
+    print("4) Rare Strenght Potion: +15 Strenght | 300 Coins ")
+    print("5) Rare Health Potion: +50 Health | 300 Coins ")
+    print("6) Rare Intelligence Potion: +15 Intelligence | 300 Coins ")
+    print("7) Elite Strenght Potion: +30 Strenght | 750 Coins ")
+    print("8) Elite Health Potion: +100 Health | 750 Coins ")
+    print("9) Elite Intelligence Potion: +30 Intelligence | 750  Coins ")
     while True:
         try:
             choice = int(input(""))
@@ -173,90 +171,74 @@ def shop(HP, Strenght, Agillity, Intelligence, Critical, coins):
         except ValueError:
             print("Error! Choose a number")
     if choice == 1:
-        if coins >= 20:
-            coins -= 20
+        if coins >= 150:
+            coins -= 150
             Strenght +=5
         else:
             print("Not enough coins!")
     elif choice == 2:
-        if coins >=30:
-            coins-=30
-            HP += 30
+        if coins >=150:
+            coins-=150
+            maxhp += 30
         else:
             print("Not enough coins!")
     elif choice == 3:
-        if coins >=25:
-            coins-=25
-            Agillity += 10
-        else:
-            print("Not enough coins!")
-    elif choice == 4:
-        if coins >=20:
-            coins-=20
+        if coins >=150:
+            coins-=150
             Intelligence += 5
         else:
             print("Not enough coins!")
+    elif choice == 4:
+        if coins >= 300:
+            coins-=300
+            Strenght += 13
+        else:
+            print("Not enough coins!")
     elif choice == 5:
-        if coins >= 50:
-            coins-=50
-            Strenght += 15
+        if coins >= 300:
+            coins -= 300
+            maxhp += 50
         else:
             print("Not enough coins!")
     elif choice == 6:
-        if coins >= 80:
-            coins -= 80
-            HP += 50
+        if coins >= 300:
+            coins-=300
+            Intelligence += 13
         else:
             print("Not enough coins!")
     elif choice == 7:
-        if coins >= 65:
-            coins -= 65
-            Agillity += 15
+        if coins >=750:
+            coins-=750
+            Strenght += 35
         else:
             print("Not enough coins!")
     elif choice == 8:
-        if coins >= 50:
-            coins-=50
-            Intelligence += 15
+        if coins >= 750:
+            coins -= 750
+            maxhp += 100
         else:
             print("Not enough coins!")
     elif choice == 9:
-        if coins >=100:
-            coins-=100
-            Strenght += 30
-        else:
-            print("Not enough coins!")
-    elif choice == 10:
-        if coins >= 350:
-            coins -= 350
-            HP += 100
-        else:
-            print("Not enough coins!")
-    elif choice == 11:
-        if coins >= 165:
-            coins -=165
-            Agillity +=45
-        else:
-            print("Not enough coins!")
-    elif choice == 12:
-        if coins >=100:
-            coins-=100
+        if coins >=750:
+            coins-=750
             Intelligence += 45
         else:
             print("Not enough coins!")
     else:
         print("Invalid choice!")
-    return (HP, Strenght, Agillity, Intelligence, Critical, coins)
+    return (HP, Strenght, Agillity, Intelligence, Critical, coins,maxhp)
 def arena(XP):
+    multi = 1
     for i in range(len(Arenas)):
         if i == 0:
             pass
         else:
-            if XP >= i*100:
+            if XP >= i*100*multi:
                 pass
             else:
                 return i+1
         print(f"{i+1}){Arenas[i]}")
+        multi += i*1.5
 def Grass_Fields(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
     print("You just spawned at Grass Fields")
     print("1) Fight")
@@ -270,7 +252,6 @@ def Grass_Fields(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
 
     if choice == 1:
         spawnorder = ["Baby Wolf", "Weak Goblin", "Wolf"]
-        i = 0
         for enemies in spawnorder:
             enemy_strenght = Enemydict["Grass Fields"][enemies]["Strenght"]
             enemy_hp = Enemydict["Grass Fields"][enemies]["HP"]
@@ -283,11 +264,6 @@ def Grass_Fields(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             print(f"{enemies} Attack: {enemy_strenght}")
             print("1) Attack")
             print("2) Run Away")
-            i +=1
-            if i == 0:
-                pass
-            else:
-                HP += Agillity*5
             while True:
                 try:
                     choice = int(input(""))
@@ -338,11 +314,13 @@ def Grass_Fields(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
                     sleep(0.5)
                     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
                 if enemy_hp <= 0:
+                    earned_xp = enemy_xp + Intelligence * 0.1
+                    earned_coins = enemy_coins + Intelligence * 0.1
                     print(f"You beat {enemies}")
-                    print(f"{enemy_xp} XP Gained")
-                    print(f"{enemy_coins} Coins Earned")
-                    XP += enemy_xp
-                    coins += enemy_coins * Intelligence
+                    print(f"{earned_xp} XP Gained")
+                    print(f"{earned_coins} Coins Earned")
+                    XP += enemy_xp + Intelligence * 0.1
+                    coins += enemy_coins + Intelligence * 0.1
                     sleep(0.5)
             elif choice == 2:
                 print("You ran away safely!")
@@ -351,7 +329,6 @@ def Grass_Fields(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             else:
                 print("Invalid choice!")
                 return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
-            i += 1
     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
 def Village(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
     print("You just spawned at Village")
@@ -366,7 +343,6 @@ def Village(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
 
     if choice == 1:
         spawnorder = ["Villager", "Goblin"]
-        i = 0
         for enemies in spawnorder:
             enemy_strenght = Enemydict["Village"][enemies]["Strenght"]
             enemy_hp = Enemydict["Village"][enemies]["HP"]
@@ -379,11 +355,6 @@ def Village(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             print(f"{enemies} Attack: {enemy_strenght}")
             print("1) Attack")
             print("2) Run Away")
-            i +=1
-            if i == 0:
-                pass
-            else:
-                HP += Agillity*5
             while True:
                 try:
                     choice = int(input(""))
@@ -434,11 +405,13 @@ def Village(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
                     sleep(0.5)
                     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
                 if enemy_hp <= 0:
+                    earned_xp = enemy_xp + Intelligence * 0.1
+                    earned_coins = enemy_coins + Intelligence * 0.1
                     print(f"You beat {enemies}")
-                    print(f"{enemy_xp} XP Gained")
-                    print(f"{enemy_coins} Coins Earned")
-                    XP += enemy_xp
-                    coins += enemy_coins * Intelligence
+                    print(f"{earned_xp} XP Gained")
+                    print(f"{earned_coins} Coins Earned")
+                    XP += enemy_xp + Intelligence * 0.1
+                    coins += enemy_coins + Intelligence * 0.1
                     sleep(0.5)
             elif choice == 2:
                 print("You ran away safely!")
@@ -447,7 +420,6 @@ def Village(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             else:
                 print("Invalid choice!")
                 return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
-            i += 1
     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
 def Cave(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
     print("You just spawned at Cave")
@@ -462,7 +434,6 @@ def Cave(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
 
     if choice == 1:
         spawnorder = ["Skeleton", "Dark Mage"]
-        i = 0
         for enemies in spawnorder:
             enemy_strenght = Enemydict["Cave"][enemies]["Strenght"]
             enemy_hp = Enemydict["Cave"][enemies]["HP"]
@@ -475,11 +446,6 @@ def Cave(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             print(f"{enemies} Attack: {enemy_strenght}")
             print("1) Attack")
             print("2) Run Away")
-            i +=1
-            if i == 0:
-                pass
-            else:
-                HP += Agillity*5
             while True:
                 try:
                     choice = int(input(""))
@@ -530,11 +496,13 @@ def Cave(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
                     sleep(0.5)
                     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
                 if enemy_hp <= 0:
+                    earned_xp = enemy_xp + Intelligence * 0.1
+                    earned_coins = enemy_coins + Intelligence * 0.1
                     print(f"You beat {enemies}")
-                    print(f"{enemy_xp} XP Gained")
-                    print(f"{enemy_coins} Coins Earned")
-                    XP += enemy_xp
-                    coins += enemy_coins * Intelligence
+                    print(f"{earned_xp} XP Gained")
+                    print(f"{earned_coins} Coins Earned")
+                    XP += enemy_xp + Intelligence * 0.1
+                    coins += enemy_coins + Intelligence * 0.1
                     sleep(0.5)
             elif choice == 2:
                 print("You ran away safely!")
@@ -543,7 +511,6 @@ def Cave(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             else:
                 print("Invalid choice!")
                 return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
-            i += 1
     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
 def Gladiator_Arena(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
     print("You just spawned at Gladiator Arena")
@@ -557,7 +524,6 @@ def Gladiator_Arena(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             print("Error! Enter a number")
     if choice == 1:
         spawnorder = ["Lion","Gladiator"]
-        i = 0
         for enemies in spawnorder:
             enemy_strenght = Enemydict["Gladiator Arena"][enemies]["Strenght"]
             enemy_hp = Enemydict["Gladiator Arena"][enemies]["HP"]
@@ -570,11 +536,6 @@ def Gladiator_Arena(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             print(f"{enemies} Attack: {enemy_strenght}")
             print("1) Attack")
             print("2) Run Away")
-            i +=1
-            if i == 0:
-                pass
-            else:
-                HP += Agillity*5
             while True:
                 try:
                     choice = int(input(""))
@@ -625,11 +586,13 @@ def Gladiator_Arena(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
                     sleep(0.5)
                     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
                 if enemy_hp <= 0:
+                    earned_xp = enemy_xp + Intelligence * 0.1
+                    earned_coins = enemy_coins + Intelligence * 0.1
                     print(f"You beat {enemies}")
-                    print(f"{enemy_xp} XP Gained")
-                    print(f"{enemy_coins} Coins Earned")
-                    XP += enemy_xp
-                    coins += enemy_coins * Intelligence
+                    print(f"{earned_xp} XP Gained")
+                    print(f"{earned_coins} Coins Earned")
+                    XP += enemy_xp + Intelligence * 0.1
+                    coins += enemy_coins + Intelligence * 0.1
                     sleep(0.5)
             elif choice == 2:
                 print("You ran away safely!")
@@ -638,7 +601,6 @@ def Gladiator_Arena(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             else:
                 print("Invalid choice!")
                 return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
-            i += 1
     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
 def Kings_Castle(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
     print("You just spawned at Kings Castle")
@@ -653,7 +615,6 @@ def Kings_Castle(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
 
     if choice == 1:
         spawnorder = ["Lower Guards", "Upper Guards","King"]
-        i = 0
         for enemies in spawnorder:
             enemy_strenght = Enemydict["Kings Castle"][enemies]["Strenght"]
             enemy_hp = Enemydict["Kings Castle"][enemies]["HP"]
@@ -666,11 +627,6 @@ def Kings_Castle(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             print(f"{enemies} Attack: {enemy_strenght}")
             print("1) Attack")
             print("2) Run Away")
-            i +=1
-            if i == 0:
-                pass
-            else:
-                HP += Agillity*5
             while True:
                 try:
                     choice = int(input(""))
@@ -721,11 +677,13 @@ def Kings_Castle(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
                     sleep(0.5)
                     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
                 if enemy_hp <= 0:
+                    earned_xp = enemy_xp + Intelligence * 0.1
+                    earned_coins = enemy_coins + Intelligence * 0.1
                     print(f"You beat {enemies}")
-                    print(f"{enemy_xp} XP Gained")
-                    print(f"{enemy_coins} Coins Earned")
-                    XP += enemy_xp
-                    coins += enemy_coins * Intelligence
+                    print(f"{earned_xp} XP Gained")
+                    print(f"{earned_coins} Coins Earned")
+                    XP += enemy_xp + Intelligence * 0.1
+                    coins += enemy_coins + Intelligence * 0.1
                     sleep(0.5)
             elif choice == 2:
                 print("You ran away safely!")
@@ -734,7 +692,6 @@ def Kings_Castle(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             else:
                 print("Invalid choice!")
                 return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
-            i += 1
     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
 def Zeus(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
     print("You just spawned at Olympus")
@@ -749,7 +706,6 @@ def Zeus(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
 
     if choice == 1:
         spawnorder = ["Zeus"]
-        i = 0
         for enemies in spawnorder:
             enemy_strenght = Enemydict["Zeus"][enemies]["Strenght"]
             enemy_hp = Enemydict["Zeus"][enemies]["HP"]
@@ -762,11 +718,6 @@ def Zeus(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             print(f"{enemies} Attack: {enemy_strenght}")
             print("1) Attack")
             print("2) Run Away")
-            i +=1
-            if i == 0:
-                pass
-            else:
-                HP += Agillity*5
             while True:
                 try:
                     choice = int(input(""))
@@ -817,11 +768,13 @@ def Zeus(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
                     sleep(0.5)
                     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
                 if enemy_hp <= 0:
+                    earned_xp = enemy_xp + Intelligence * 0.1
+                    earned_coins = enemy_coins + Intelligence * 0.1
                     print(f"You beat {enemies}")
-                    print(f"{enemy_xp} XP Gained")
-                    print(f"{enemy_coins} Coins Earned")
-                    XP += enemy_xp
-                    coins += enemy_coins * Intelligence
+                    print(f"{earned_xp} XP Gained")
+                    print(f"{earned_coins} Coins Earned")
+                    XP += enemy_xp + Intelligence * 0.1
+                    coins += enemy_coins + Intelligence * 0.1
                     sleep(0.5)
             elif choice == 2:
                 print("You ran away safely!")
@@ -830,7 +783,6 @@ def Zeus(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             else:
                 print("Invalid choice!")
                 return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
-            i += 1
     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
 def Daemon(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
     print("You just spawned at Peak Olympus")
@@ -845,7 +797,6 @@ def Daemon(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
 
     if choice == 1:
         spawnorder = ["Daemon"]
-        i = 0
         for enemies in spawnorder:
             enemy_strenght = Enemydict["Daemon"][enemies]["Strenght"]
             enemy_hp = Enemydict["Daemon"][enemies]["HP"]
@@ -858,11 +809,6 @@ def Daemon(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             print(f"{enemies} Attack: {enemy_strenght}")
             print("1) Attack")
             print("2) Run Away")
-            i +=1
-            if i == 0:
-                pass
-            else:
-                HP += Agillity*5
             while True:
                 try:
                     choice = int(input(""))
@@ -913,11 +859,13 @@ def Daemon(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
                     sleep(0.5)
                     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
                 if enemy_hp <= 0:
+                    earned_xp = enemy_xp + Intelligence * 0.1
+                    earned_coins = enemy_coins + Intelligence * 0.1
                     print(f"You beat {enemies}")
-                    print(f"{enemy_xp} XP Gained")
-                    print(f"{enemy_coins} Coins Earned")
-                    XP += enemy_xp
-                    coins += enemy_coins * Intelligence
+                    print(f"{earned_xp} XP Gained")
+                    print(f"{earned_coins} Coins Earned")
+                    XP += enemy_xp + Intelligence * 0.1
+                    coins += enemy_coins + Intelligence * 0.1
                     sleep(0.5)
             elif choice == 2:
                 print("You ran away safely!")
@@ -926,7 +874,6 @@ def Daemon(XP, HP, Strenght, Agillity, Intelligence, Critical, coins):
             else:
                 print("Invalid choice!")
                 return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
-            i += 1
     return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
 def play(XP,HP, Strenght, Agillity, Intelligence,Critical, coins):
     arena(XP)
@@ -940,26 +887,25 @@ def play(XP,HP, Strenght, Agillity, Intelligence,Critical, coins):
         return Grass_Fields(XP,HP, Strenght, Agillity, Intelligence,Critical,coins)
     elif choice == 2 and XP>100:
         return Village(XP,HP,Strenght,Agillity,Intelligence,Critical,coins)
-    elif choice == 3 and XP>200:
+    elif choice == 3 and XP>500:
         return Cave(XP,HP,Strenght,Agillity,Intelligence,Critical,coins)
-    elif choice == 4 and XP>300:
+    elif choice == 4 and XP>1650:
         return Gladiator_Arena(XP,HP,Strenght,Agillity,Intelligence,Critical,coins)
-    elif choice == 5 and XP>400:
+    elif choice == 5 and XP>4000:
         return Kings_Castle(XP,HP,Strenght,Agillity,Intelligence,Critical,coins)
-    elif choice == 6 and XP>500:
+    elif choice == 6 and XP>8000:
         return Zeus(XP,HP,Strenght,Agillity,Intelligence,Critical,coins)
-    elif choice == 7 and XP>600:
+    elif choice == 7 and XP>14100:
         return Daemon(XP,HP,Strenght,Agillity,Intelligence,Critical,coins)
     else:
         return (XP, HP, Strenght, Agillity, Intelligence, Critical, coins)
     
-def stats(name,XP,HP, Strenght, Agillity, Intelligence,Critical,coins):
+def stats(name,XP,HP, Strenght, Agillity, Intelligence,Critical,coins,maxhp):
     print(f"Hero: {name} Class: {Heroclass.capitalize()}")
     print("Base stats: ")
     print(f"Strenght:{Strenght}")
     print(f"Critical:{Critical}")
     print(f"Intelligence:{Intelligence}")
-    print(f"Agillity:{Agillity}")
     print(f"Health:{HP}")
     print(f"XP:{XP}")
     print(f"Coins:{coins}")
@@ -976,7 +922,7 @@ while True:
         Agillity = classesdict[Heroclass]["Agillity"]
         break
     else:
-        "Not a class, Try Again!"
+        print("Not a class, Try Again!")
 print("Allocate Skill Points") 
 SP = 5
 while True:
@@ -986,7 +932,6 @@ while True:
     print(f"1) Strenght:{Strenght}")
     print(f"2) Critical:{Critical}")
     print(f"3) Intelligence:{Intelligence}")
-    print(f"4) Agillity:{Agillity}")
     while True:
         try:
             choice = int(input(""))
@@ -1002,9 +947,6 @@ while True:
     elif choice ==3:
         Intelligence+=1
         SP-=1
-    elif choice==4:
-        Agillity+=1
-        SP-=1
     else:
         print("Error! Choose a valid option")
 print(f"Hero: {name} Class: {Heroclass.capitalize()}")
@@ -1012,14 +954,13 @@ print("Base stats: ")
 print(f"Strenght:{Strenght}")
 print(f"Critical:{Critical}")
 print(f"Intelligence:{Intelligence}")
-print(f"Agillity:{Agillity}")
 print(f"Health:{HP}")
 print(f"XP:{XP}")
 while True:
-    print("1) Play")#TODO
-    print("2) Shops")#TODO
+    print("1) Play")
+    print("2) Shops")
     print("3) Stats")
-    print("4) Exit")#TODO
+    print("4) Exit")
     while True:
         try:
             choice = int(input(""))
@@ -1029,11 +970,13 @@ while True:
     if choice == 1:
         XP,HP, Strenght, Agillity, Intelligence,Critical, coins = play(XP,HP, Strenght, Agillity, Intelligence,Critical, coins)
     elif choice == 2:
-        HP, Strenght, Agillity, Intelligence,Critical, coins = shop(HP, Strenght, Agillity, Intelligence,Critical, coins)
+        HP, Strenght, Agillity, Intelligence,Critical, coins, maxhp = shop(HP, Strenght, Agillity, Intelligence,Critical, coins, maxhp)
     elif choice == 3:
-        stats(name,XP,HP, Strenght, Agillity, Intelligence,Critical,coins)
+        stats(name,XP,HP, Strenght, Agillity, Intelligence,Critical,coins,maxhp)
     elif choice == 4:
         print("Exiting")
         break
     else:
         print("Please choose a valid option!")
+
+#balancing update
